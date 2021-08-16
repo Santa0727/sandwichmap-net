@@ -41,10 +41,10 @@ class DashboardController extends Controller
 
         $chartOrderLabels = [];
         $chartOrderValues = [];
-        for ($i = 29; $i >= 0; $i--) {
+        for ($i = 89; $i >= 0; $i--) {
             $lower = date('Y-m-d', time() - $i * 3600 * 24);
             $upper = date('Y-m-d', time() - ($i - 1) * 3600 * 24);
-            if ($i == 29 || date('d', strtotime($lower)) == '1') {
+            if ($i == 89 || date('d', strtotime($lower)) == '1') {
                 array_push($chartOrderLabels, date('M', strtotime($lower)));
             } else {
                 array_push($chartOrderLabels, date('d', strtotime($lower)));

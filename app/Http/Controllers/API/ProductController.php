@@ -15,45 +15,6 @@ class ProductController extends Controller
     {
     }
 
-    public function updateProduct(Request $request, $product_id)
-    {
-        $product = Products::where('id', $product_id)->first();
-        if (!$product) {
-            return response()->json(['error' => 'Not found'], 404);
-        }
-        $product->update($request->only(['name', 'summary', 'amount']));
-        if ($request->avatar) {
-            if (file_exists(public_path($product->avatar))) {
-                unlink(public_path($product->avatar));
-            }
-            $filePath = 'upload/avatar/' . time() . '.png';
-            Storage::disk('upload')->put($filePath, base64_decode($request->avatar));
-            $product->update(['avatar' => $filePath]);
-        }
-
-        ProductsFeature::where('products_id', $product->id)->delete();
-        if ($request->addons) {
-            foreach ($request->addons as $item) {
-                ProductsFeature::create([
-                    'name' => $item['name'],
-                    'amount' => $item['amount'],
-                    'level' => 1,
-                    'products_id' => $product->id
-                ]);
-            }
-        }
-        if ($request->sub_categories) {
-            ProductsCategory::where('products_id', $product->id)->delete();
-            foreach ($request->sub_categories as $v) {
-                ProductsCategory::create([
-                    'products_id' => $product->id,
-                    'sub_category_id' => $v
-                ]);
-            }
-        }
-        return response()->json($product);
-    }
-
     public function resetProductAvatar(Request $request, $product_id)
     {
         $product = Products::where('id', $product_id)->first();
