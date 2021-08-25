@@ -368,6 +368,11 @@ class HomePageController extends Controller
         $headers = "From:   noreply@icheck-antibody.jp";
         $msg = "Dear Partner You Have One New Order\nCustomer name: " . $order->client_name . "\nMobile Number: " . $order->phone . "\nTotal Bill: " . $order->total . "\nThank you for using Sandwich Map";
         Common::SendEmail($to, $subject, $msg, $headers);
+
+        if ($user->sub_emails) {
+            $emails = explode(',', $user->sub_emails);
+            foreach ($emails as $e) Common::SendEmail($e, $subject, $msg, $headers);
+        }
     }
 
     private function complete_order_verfiy2()

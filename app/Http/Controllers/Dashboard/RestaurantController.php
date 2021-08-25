@@ -371,6 +371,7 @@ UAE';
                     $user->name = Input::get('name');
                     $user->phone = Input::get('phone');
                     $user->email = Input::get('email');
+                    $user->sub_emails = Input::get('sub_emails');
                     if (Input::get('password') != null) {
                         $user->password = bcrypt(Input::get('password'));
                     }
@@ -439,6 +440,7 @@ Thank you for using SandwichMap for more support Please call 0501212770';
                     $user->name = Input::get('name');
                     $user->phone = Input::get('phone');
                     $user->email = Input::get('email');
+                    $user->sub_emails = Input::get('sub_emails');
                     $user->active = 1;
                     $user->role = 4;
                     if (Input::get('password') != null) {
