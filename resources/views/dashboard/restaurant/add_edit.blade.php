@@ -1,5 +1,9 @@
     @extends('dashboard.layouts.app')
 
+    @section('css')
+        <link rel="stylesheet" href="{{ $path . 'css/selectize.css' }}">
+    @endsection
+
     @section('title')
         Restaurant
     @endsection
@@ -8,7 +12,6 @@
         @section('create_btn_btn') Close @endsection
 
     @section('content')
-
 
         <form class="ajaxForm users" enctype="multipart/form-data" data-name="users" method="post" id="form" action={{ route('dashboard_restaurant.post_data') }}>
             {{ csrf_field() }}
@@ -176,12 +179,10 @@
 
         </form>
 
-
-
     @endsection
 
-
     @section('js')
+        <script src="{{ $path . 'js/selectize.min.js' }}"></script>
         <script type="text/javascript">
             $(document).ready(function() {
 
@@ -203,6 +204,16 @@
                     $('.title_info').html("Create new");
                 }
 
+                $('#sub_emails').selectize({
+                    delimiter: ',',
+                    persist: false,
+                    create: function(input) {
+                        return {
+                            value: input,
+                            text: input
+                        }
+                    }
+                });
             });
 
             function addRestaurant(e) {
