@@ -198,6 +198,7 @@ class HomePageController extends Controller
             "description" => "Order Placed Successfully",
             "order_id" => $order_id
         );
+        $this->sendEmail($save);
 
         return parent::successjson($data, 200);
     }
@@ -328,8 +329,6 @@ class HomePageController extends Controller
 
         $user = User::where('id', $save->user_id)->first();
 
-        $to = $user->email;
-        $subject = "SandwichMap - new Order# " . $save->id;
         $message = "Dear Partner You Have One New Order 
 
                     Thank you for using SandwichMap 
@@ -353,17 +352,23 @@ class HomePageController extends Controller
                     Sandwich Map LLC
                     Restaurants Partners Support Team
                     ";
-        $headers = "From:   noreply@icheck-antibody.jp" . "\r\n" .
-            "CC: somebodyelse@example.com";
 
         $msg = "Dear Partner You Have One New Order\nCustomer name: " . $save->client_name . "\nMobile Number: " . $save->phone . "\nTotal Bill: " . $save->total . "\nThank you for using Sandwich Map";
 
         Common::SendTextSMS($user->phone, $msg);
-        Common::SendEmail($to, $subject, $msg, $headers);
 
         return parent::successjson("Active Created", 200);
     }
 
+    private function sendEmail($order)
+    {
+        $user = User::where('id', $order->user_id)->first();
+        $to = $user->email;
+        $subject = "SandwichMap - new Order# " . $order->id;
+        $headers = "From:   noreply@icheck-antibody.jp";
+        $msg = "Dear Partner You Have One New Order\nCustomer name: " . $order->client_name . "\nMobile Number: " . $order->phone . "\nTotal Bill: " . $order->total . "\nThank you for using Sandwich Map";
+        Common::SendEmail($to, $subject, $msg, $headers);
+    }
 
     private function complete_order_verfiy2()
     {
