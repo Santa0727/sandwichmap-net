@@ -198,7 +198,6 @@ class HomePageController extends Controller
             "description" => "Order Placed Successfully",
             "order_id" => $order_id
         );
-        $this->sendEmail($save);
 
         return parent::successjson($data, 200);
     }
@@ -290,6 +289,9 @@ class HomePageController extends Controller
         Common::SendTextSMS($request->phone, $message);
         $save->phone_active = 1;
         $save->save();
+
+        $this->sendEmail($save);
+
         return parent::successjson("Done Created", 200);
     }
 
